@@ -1,0 +1,97 @@
+﻿@{
+    ViewBag.Title = "Giảm giá hai sản phẩm";
+    var products = ViewBag.Products as List<Warehouse_25dh110314.Models.Product>;
+}
+
+<div class="card shadow-sm mb-4">
+    <div class="card-header bg-white py-3">
+        <h5 class="m-0 text-primary fw-bold">Câu 5: Giảm giá hai sản phẩm trong một giao dịch (Transaction)</h5>
+    </div>
+    <div class="card-body">
+        @if (ViewBag.ErrorMessage != null)
+        {
+            <div class="alert alert-danger" role="alert">
+                <strong>Thông báo: </strong> @ViewBag.ErrorMessage
+            </div>
+        }
+
+        @if (ViewBag.SuccessMessage != null)
+        {
+            <div class="alert alert-success" role="alert">
+                <strong>Thành công: </strong> @ViewBag.SuccessMessage
+            </div>
+        }
+
+        @using (Html.BeginForm("BatchDiscount", "Products", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <div class="p-3 border rounded bg-light">
+                        <h6 class="fw-bold text-dark mb-3">Sản phẩm A</h6>
+                        <div class="mb-3">
+                            <label class="form-label">Chọn sản phẩm A:</label>
+                            @Html.DropDownList("productAId", (SelectList)ViewBag.ProductList, "-- Chọn sản phẩm A --", new { @class = "form-select", required = "required" })
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Tỷ lệ giảm giá (%):</label>
+                            <input type="number" step="any" name="discountA" class="form-control" placeholder="Nhập % giảm A..." required />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="p-3 border rounded bg-light">
+                        <h6 class="fw-bold text-dark mb-3">Sản phẩm B</h6>
+                        <div class="mb-3">
+                            <label class="form-label">Chọn sản phẩm B:</label>
+                            @Html.DropDownList("productBId", (SelectList)ViewBag.ProductList, "-- Chọn sản phẩm B --", new { @class = "form-select", required = "required" })
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Tỷ lệ giảm giá (%):</label>
+                            <input type="number" step="any" name="discountB" class="form-control" placeholder="Nhập % giảm B..." required />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 text-center">
+                    <button type="submit" class="btn btn-primary px-5 py-2 fw-bold">Thực hiện giao dịch giảm giá đồng thời</button>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-header bg-white py-3">
+        <h6 class="m-0 text-secondary fw-bold">Bảng kiểm tra dữ liệu sản phẩm trong CSDL</h6>
+    </div>
+    <div class="card-body p-0">
+        <table class="table table-bordered table-hover align-middle mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>ProductID</th>
+                    <th>Tên sản phẩm</th>
+                    <th>Danh mục</th>
+                    <th>Đơn giá hiện tại</th>
+                    <th>Số lượng</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (products != null)
+                {
+                    foreach (var item in products)
+                    {
+                        <tr>
+                            <td>@item.ProductID</td>
+                            <td>@item.ProductName</td>
+                            <td>@item.Category</td>
+                            <td class="fw-bold text-primary">@item.Price.ToString("N0") đ</td>
+                            <td>@item.Quantity</td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

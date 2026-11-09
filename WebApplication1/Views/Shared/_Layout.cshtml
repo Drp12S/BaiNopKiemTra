@@ -1,0 +1,89 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản Lý Kho Hàng</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            min-height: calc(100vh - 130px);
+            background-color: #f8f9fa;
+            border-right: 1px solid #dee2e6;
+        }
+
+            .sidebar .nav-link {
+                font-weight: 500;
+                color: #333;
+                margin-bottom: 5px;
+            }
+
+                .sidebar .nav-link:hover {
+                    background-color: #0d6efd;
+                    color: white;
+                    border-radius: 4px;
+                }
+
+        footer {
+            margin-top: auto;
+        }
+    </style>
+</head>
+<body>
+    <header class="bg-primary text-white py-3 shadow-sm">
+        <div class="container-fluid d-flex justify-content-between align-items-center px-4">
+            <h4 class="m-0">HỆ THỐNG QUẢN LÝ KHO HÀNG</h4>
+            <div class="fs-5 fw-bold">
+                Họ và tên: Nguyễn Quốc Duy | MSSV: 25dh110314
+            </div>
+        </div>
+    </header>
+
+    <div class="container-fluid">
+        <div class="row">
+            <nav class="col-md-3 col-lg-2 p-3 sidebar">
+                <h6 class="text-uppercase text-muted fw-bold mb-3">Chức năng hệ thống</h6>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("Index", "Products")">Câu 2: DS & Sửa Sản Phẩm</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("Filter", "Products")">Câu 3: Lọc & Sắp Xếp</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("AdjustPrice", "Products")">Câu 4: Tăng / Giảm Giá</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("BatchDiscount", "Products")">Câu 5: Giảm Giá Giao Dịch</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("Create", "Products")">Câu 6: Thêm Sản Phẩm</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("Statistics", "Products")">Câu 7: Thống Kê Kho</a>
+                    </li>
+                </ul>
+            </nav>
+
+            <main class="col-md-9 col-lg-10 p-4">
+                @RenderBody()
+            </main>
+        </div>
+    </div>
+
+    <footer class="bg-dark text-white text-center py-3">
+        <div class="container">
+            <span>Ngày tháng năm sinh sinh viên: <strong>3/7/07</strong></span>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    @RenderSection("scripts", required: false)
+</body>
+</html>

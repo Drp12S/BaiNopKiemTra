@@ -1,0 +1,47 @@
+﻿@model Warehouse_25dh110314.Models.Product
+
+<div class="card shadow-sm col-md-8 mx-auto">
+    <div class="card-header bg-white py-3">
+        <h5 class="m-0 text-primary fw-bold">Chỉnh sửa sản phẩm</h5>
+    </div>
+    <div class="card-body">
+        @using (Html.BeginForm("Edit", "Products", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(m => m.ProductID)
+
+            <div class="mb-3">
+                <label class="form-label fw-bold">Mã sản phẩm (ProductID):</label>
+                <input type="text" class="form-control" value="@Model.ProductID" disabled />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-bold">Tên sản phẩm:</label>
+                @Html.TextBoxFor(m => m.ProductName, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.ProductName, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-bold">Danh mục:</label>
+                @Html.TextBoxFor(m => m.Category, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Category, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-bold">Đơn giá (VNĐ):</label>
+                @Html.TextBoxFor(m => m.Price, new { @class = "form-control", type = "number", step = "any" })
+                @Html.ValidationMessageFor(m => m.Price, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-bold">Số lượng tồn kho (Không cho sửa):</label>
+                @Html.TextBoxFor(m => m.Quantity, new { @class = "form-control", @readonly = "readonly" })
+            </div>
+
+            <div class="mt-4">
+                <button type="submit" class="btn btn-success">Lưu thay đổi</button>
+                <a href="@Url.Action("Index", "Products")" class="btn btn-secondary">Quay lại danh sách</a>
+            </div>
+        }
+    </div>
+</div>

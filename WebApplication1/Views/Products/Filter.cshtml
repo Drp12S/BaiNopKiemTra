@@ -1,0 +1,94 @@
+﻿@model IEnumerable<Warehouse_25dh110314.Models.Product>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-header bg-white py-3">
+        <h5 class="m-0 text-primary fw-bold">Câu 3: Lọc và Sắp xếp sản phẩm</h5>
+    </div>
+    <div class="card-body">
+        @if (ViewBag.ErrorMessage != null)
+        {
+            <div class="alert alert-danger" role="alert">
+                <strong>Lỗi: </strong> @ViewBag.ErrorMessage
+            </div>
+        }
+
+        @using (Html.BeginForm("Filter", "Products", FormMethod.Get))
+        {
+            <div class="row g-3">
+                <div class="col-md-3">
+                    <label class="form-label fw-bold">Từ giá (VNĐ):</label>
+                    <input type="number" name="minPrice" class="form-control" value="@ViewBag.CurrentMinPrice" placeholder="Nhập từ giá..." />
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label fw-bold">Đến giá (VNĐ):</label>
+                    <input type="number" name="maxPrice" class="form-control" value="@ViewBag.CurrentMaxPrice" placeholder="Nhập đến giá..." />
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label fw-bold">Danh mục:</label>
+                    <select name="category" class="form-select">
+                        <option value="">-- Tất cả danh mục --</option>
+                        @if (ViewBag.Categories != null)
+                        {
+                            foreach (var cat in (List<string>)ViewBag.Categories)
+                            {
+                                <option value="@cat" @(ViewBag.CurrentCategory == cat ? "selected" : "")>@cat</option>
+                            }
+                        }
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label fw-bold">Sắp xếp theo giá:</label>
+                    <select name="sortOrder" class="form-select">
+                        <option value="">-- Mặc định --</option>
+                        <option value="asc" @(ViewBag.CurrentSortOrder == "asc" ? "selected" : "")>Giá tăng dần</option>
+                        <option value="desc" @(ViewBag.CurrentSortOrder == "desc" ? "selected" : "")>Giá giảm dần</option>
+                    </select>
+                </div>
+                <div class="col-12 mt-3">
+                    <button type="submit" class="btn btn-primary px-4">Thực hiện Lọc & Sắp xếp</button>
+                    <a href="@Url.Action("Filter", "Products")" class="btn btn-outline-secondary">Đặt lại</a>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-header bg-white py-3">
+        <h6 class="m-0 text-secondary fw-bold">Kết quả hiển thị (@Model.Count() sản phẩm)</h6>
+    </div>
+    <div class="card-body p-0">
+        <table class="table table-bordered table-hover align-middle mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>ProductID</th>
+                    <th>Tên sản phẩm</th>
+                    <th>Danh mục</th>
+                    <th>Đơn giá</th>
+                    <th>Số lượng tồn kho</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (!Model.Any())
+                {
+                    <tr>
+                        <td colspan="5" class="text-center py-3 text-muted">Không có sản phẩm nào phù hợp điều kiện lọc.</td>
+                    </tr>
+                }
+                else
+                {
+                    foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.ProductID</td>
+                            <td>@item.ProductName</td>
+                            <td>@item.Category</td>
+                            <td class="fw-bold text-success">@item.Price.ToString("N0") đ</td>
+                            <td>@item.Quantity</td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

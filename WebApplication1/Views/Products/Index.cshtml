@@ -1,0 +1,57 @@
+﻿@model IEnumerable<Warehouse_25dh110314.Models.Product>
+
+<div class="card shadow-sm">
+    <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+        <h5 class="m-0 text-primary fw-bold">Danh sách sản phẩm</h5>
+    </div>
+    <div class="card-body">
+        <table class="table table-bordered table-hover align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th>ProductID</th>
+                    <th>Tên sản phẩm</th>
+                    <th>Danh mục</th>
+                    <th>Đơn giá</th>
+                    <th>Số lượng</th>
+                    <th>Mức giá</th>
+                    <th>Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    string priceLevel = "";
+                    string badgeClass = "";
+
+                    if (item.Price < 100000)
+                    {
+                        priceLevel = "Giá thấp";
+                        badgeClass = "bg-secondary";
+                    }
+                    else if (item.Price < 500000)
+                    {
+                        priceLevel = "Giá trung bình";
+                        badgeClass = "bg-info text-dark";
+                    }
+                    else
+                    {
+                        priceLevel = "Giá cao";
+                        badgeClass = "bg-danger";
+                    }
+
+                    <tr>
+                        <td>@item.ProductID</td>
+                        <td>@item.ProductName</td>
+                        <td>@item.Category</td>
+                        <td>@item.Price.ToString("N0") đ</td>
+                        <td>@item.Quantity</td>
+                        <td><span class="badge @badgeClass">@priceLevel</span></td>
+                        <td>
+                            <a href="@Url.Action("Edit", "Products", new { id = item.ProductID })" class="btn btn-sm btn-warning">Sửa</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

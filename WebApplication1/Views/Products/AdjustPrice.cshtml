@@ -1,0 +1,102 @@
+﻿@{
+    ViewBag.Title = "Điều chỉnh giá sản phẩm";
+    var products = ViewBag.Products as List<Warehouse_25dh110314.Models.Product>;
+}
+
+<div class="card shadow-sm mb-4">
+    <div class="card-header bg-white py-3">
+        <h5 class="m-0 text-primary fw-bold">Câu 4: Điều chỉnh giá bán sản phẩm</h5>
+    </div>
+    <div class="card-body">
+        @if (ViewBag.ErrorMessage != null)
+        {
+            <div class="alert alert-danger" role="alert">
+                <strong>Thông báo: </strong> @ViewBag.ErrorMessage
+            </div>
+        }
+
+        @if (ViewBag.SuccessMessage != null)
+        {
+            <div class="alert alert-success" role="alert">
+                <strong>Thành công: </strong> @ViewBag.SuccessMessage
+            </div>
+        }
+
+        @using (Html.BeginForm("AdjustPrice", "Products", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            <div class="row g-3">
+                <div class="col-md-5">
+                    <label class="form-label fw-bold">Chọn sản phẩm:</label>
+                    @Html.DropDownList("productId", (SelectList)ViewBag.ProductList, "-- Chọn sản phẩm --", new { @class = "form-select", required = "required" })
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label fw-bold">Tỷ lệ (%):</label>
+                    <input type="number" step="any" name="percentage" class="form-control" placeholder="Nhập %..." required />
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">Loại điều chỉnh:</label>
+                    <div class="d-flex gap-2">
+                        <button type="submit" name="adjustType" value="increase" class="btn btn-warning flex-fill fw-bold">Tăng giá (+)</button>
+                        <button type="submit" name="adjustType" value="decrease" class="btn btn-danger flex-fill fw-bold">Giảm giá (-)</button>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-header bg-white py-3">
+        <h6 class="m-0 text-secondary fw-bold">Bảng đối chiếu giá hiện tại trong CSDL</h6>
+    </div>
+    <div class="card-body p-0">
+        <table class="table table-bordered table-hover align-middle mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>ProductID</th>
+                    <th>Tên sản phẩm</th>
+                    <th>Danh mục</th>
+                    <th>Đơn giá hiện tại</th>
+                    <th>Số lượng</th>
+                    <th>Mức giá</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (products != null)
+                {
+                    foreach (var item in products)
+                    {
+                        string priceLevel = "";
+                        string badgeClass = "";
+
+                        if (item.Price < 100000)
+                        {
+                            priceLevel = "Giá thấp";
+                            badgeClass = "bg-secondary";
+                        }
+                        else if (item.Price < 500000)
+                        {
+                            priceLevel = "Giá trung bình";
+                            badgeClass = "bg-info text-dark";
+                        }
+                        else
+                        {
+                            priceLevel = "Giá cao";
+                            badgeClass = "bg-danger";
+                        }
+
+                        <tr>
+                            <td>@item.ProductID</td>
+                            <td>@item.ProductName</td>
+                            <td>@item.Category</td>
+                            <td class="fw-bold text-primary">@item.Price.ToString("N0") đ</td>
+                            <td>@item.Quantity</td>
+                            <td><span class="badge @badgeClass">@priceLevel</span></td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
